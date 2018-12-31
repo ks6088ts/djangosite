@@ -122,11 +122,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = '/var/www/{}/static'.format(PROJECT_NAME)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'externals'),
+]
+if DEBUG is True:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+else:
+    STATIC_ROOT = '/var/www/{}/static'.format(PROJECT_NAME)
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/var/www/{}/media'.format(PROJECT_NAME)
+if DEBUG is True:
+    MEDIA_ROOT = '/var/www/{}/media'.format(PROJECT_NAME)
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
 
 # CKEditor
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
