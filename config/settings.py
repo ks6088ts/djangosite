@@ -25,7 +25,10 @@ SECRET_KEY = '@8*#m4e^8ec-1rnzu*sit&c$9io-uo$mb#d9+k9x*j)-^4ozql'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -133,9 +136,9 @@ else:
 
 MEDIA_URL = '/media/'
 if DEBUG is True:
-    MEDIA_ROOT = '/var/www/{}/media'.format(PROJECT_NAME)
-else:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
+else:
+    MEDIA_ROOT = '/var/www/{}/media'.format(PROJECT_NAME)
 
 # CKEditor
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
