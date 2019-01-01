@@ -25,6 +25,10 @@ django:
 server:
 	pipenv run python manage.py runserver $(IP_ADDRESS):$(PORT_NUMBER) --settings $(DJANGO_SETTINGS_MODULE)
 
+.PHONY: gunicorn
+gunicorn:
+	pipenv run gunicorn --bind=$(IP_ADDRESS):$(PORT_NUMBER) config.wsgi:application --env DJANGO_SETTINGS_MODULE=$(DJANGO_SETTINGS_MODULE)
+
 .PHONY: clean
 clean:
 	rm -rf $(STATIC_ROOT)
