@@ -9,7 +9,7 @@ DATABASE=db.sqlite3
 
 .PHONY: init
 init:
-	pip install pipenv
+	pip3 install pipenv
 	pipenv install --dev
 	git submodule update --init --recursive
 
