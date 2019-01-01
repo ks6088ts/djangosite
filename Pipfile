@@ -7,6 +7,8 @@ verify_ssl = true
 
 [packages]
 django = "==2.1.2"
+django-ckeditor = "==5.6.1"
+pillow = "==5.3.0"
 
 [requires]
 python_version = "3.6"
