@@ -3,9 +3,8 @@ from django.shortcuts import render, redirect
 
 from . import views
 
-app_name = 'products'
+app_name = 'pages'
 urlpatterns = [
     path('', views.index, name='index'),
-    path('<int:pk>', views.detail, name='detail'),
-    path('category/<str:pk>', views.category, name='category'),
+    path('contact', views.contact, name='contact'),
 ]
