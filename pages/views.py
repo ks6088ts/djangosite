@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 def index(request):
     return render(request, 'pages/index.html')
@@ -47,7 +47,7 @@ def contact(request):
                 'email'        : email,
                 'content'      : content,
             }
-            content = render_to_string('products/contact_template.txt', context)
+            content = render_to_string('pages/contact_template.txt', context)
 
             email = EmailMessage(
                 subject = "[ToMoCA] Thank you for contacting us",
