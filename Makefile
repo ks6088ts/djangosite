@@ -9,7 +9,7 @@ DATABASE=db.sqlite3
 
 .PHONY: init
 init:
-	pip install pipenv
+	pip3 install pipenv
 	pipenv install --dev
 	git submodule update --init --recursive
 
@@ -24,8 +24,8 @@ django:
 server:
 	pipenv run python manage.py runserver $(IP_ADDRESS):$(PORT_NUMBER) --settings $(DJANGO_SETTINGS_MODULE)
 
-.PHONY: clear
-clear:
+.PHONY: clean
+clean:
 	rm -rf $(STATIC_ROOT)
 	rm -rf $(MEDIA_ROOT)
 	rm $(DATABASE)

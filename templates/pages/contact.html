@@ -1,0 +1,33 @@
+{% extends 'products/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 text-left">
+                  <h1>お問合せ / Contact</h1>
+                  <p>
+                    メールでのお問合せは以下のアドレスでも受け付けております。<br>
+                    <img src="{% static 'tomoca/img/mail_address.png' %}" height="40px">
+                  </p>
+                  {% if error %}
+                  <p>
+                    <h1 style="color: #ff0000; background-color: transparent">{{error}}</h1>
+                  </p>
+                  {% endif %}
+                  <form role="form" action="" method="post">
+                      {% csrf_token %}
+                      {{ form.as_p }}
+                      <button type="submit" class="btn btn-primary">送信/Submit</button>
+                  </form>
+                  <div class="col-lg-3 text-left">
+                  </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
