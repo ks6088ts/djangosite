@@ -1,3 +1,6 @@
 [submodule "externals/startbootstrap-sb-admin-2"]
 	path = externals/startbootstrap-sb-admin-2
 	url = https://github.com/ks6088ts/startbootstrap-sb-admin-2.git
+[submodule "externals/startbootstrap-creative"]
+	path = externals/startbootstrap-creative
+	url = https://github.com/ks6088ts/startbootstrap-creative.git
