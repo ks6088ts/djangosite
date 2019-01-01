@@ -1,6 +1,7 @@
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
 
+
 class Category(models.Model):
     category_text = models.CharField(max_length=128)
 
@@ -16,20 +17,20 @@ class Brand(models.Model):
 
 
 class Product(models.Model):
-    product_text        = models.CharField(max_length=128)
-    measurable_range    = models.CharField(max_length=128)
-    option              = models.CharField(max_length=128)
-    serial_number       = models.CharField(max_length=32)
-    rank                = models.CharField(max_length=8)
+    product_text = models.CharField(max_length=128)
+    measurable_range = models.CharField(max_length=128)
+    option = models.CharField(max_length=128)
+    serial_number = models.CharField(max_length=32)
+    rank = models.CharField(max_length=8)
     year_of_manufacture = models.CharField(max_length=8)
 
-    price               = models.IntegerField()
+    price = models.IntegerField()
 
     description = RichTextUploadingField()
 
-    IN_STOCK         = 'In Stock'
-    SOLD     = 'Sold'
-    NEED_TO_CONFIRM  = 'Need To Confirm'
+    IN_STOCK = 'In Stock'
+    SOLD = 'Sold'
+    NEED_TO_CONFIRM = 'Need To Confirm'
     INVENTORY_STATUS = (
         (IN_STOCK, IN_STOCK),
         (SOLD, SOLD),
@@ -42,9 +43,8 @@ class Product(models.Model):
         default=IN_STOCK,
     )
 
-    brand    = models.ForeignKey(Brand, on_delete=models.CASCADE)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
 
     def __str__(self):
         return (self.product_text) + ":" + str(self.id)

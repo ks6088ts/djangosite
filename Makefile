@@ -6,6 +6,7 @@ EMAIL_ADDRESS=admin@example.com
 STATIC_ROOT=static_root
 MEDIA_ROOT=media_root
 DATABASE=db.sqlite3
+APP_DIR=products
 
 .PHONY: init
 init:
@@ -29,3 +30,11 @@ clean:
 	rm -rf $(STATIC_ROOT)
 	rm -rf $(MEDIA_ROOT)
 	rm $(DATABASE)
+
+.PHONY: lint
+lint:
+	pipenv run flake8 $(APP_DIR)
+
+.PHONY: fix
+fix:
+	pipenv run autopep8 -ivr $(APP_DIR)

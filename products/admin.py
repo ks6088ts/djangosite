@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import Category, Brand, Product, Image
 
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
         'product_text',
@@ -10,6 +11,7 @@ class ProductAdmin(admin.ModelAdmin):
         'option',
         'description',
     )
+
 
 class ImageAdmin(admin.ModelAdmin):
     list_display = (
