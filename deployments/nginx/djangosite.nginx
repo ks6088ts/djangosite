@@ -1,0 +1,34 @@
+server {
+    listen      443 ssl;
+    server_name www.ks6088ts.work; # substitute your machine's IP address or FQDN
+    ssl_certificate /etc/letsencrypt/live/www.ks6088ts.work/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/www.ks6088ts.work/privkey.pem;
+
+    # Django media
+    location /media/  {
+        root /home/ubuntu/djangosite;
+    }
+
+    location /static/ {
+        root /home/ubuntu/djangosite;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn/djangosite.sock;
+    }
+
+    # SSL/TLS 証明書の生成に必要なアクセス許可ルール
+    location ^~ /.well-known/acme-challenge/ {
+         allow all;
+         root /var/www/letsencrypt/;
+         default_type "text/plain";
+         try_files $uri =404;
+    }
+}
+
+server {
+    listen 80 default_server;
+    server_name _;
+    return 301 https://www.ks6088ts.work$request_uri;
+}

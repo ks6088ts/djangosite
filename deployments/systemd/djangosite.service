@@ -1,0 +1,18 @@
+[Unit]
+Description=gunicorn daemon (djangosite)
+Requires=djangosite.socket
+After=network.target
+
+[Service]
+User=ubuntu
+Group=root
+WorkingDirectory=/home/ubuntu/djangosite
+ExecStart=/home/ubuntu/djangosite/.venv/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/gunicorn/djangosite.sock \
+          --env DJANGO_SETTINGS_MODULE=config.settings.local \
+          config.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

@@ -1,6 +1,6 @@
 ## さくら VPS 上での操作
 
-Ubuntu 16.04 イメージを DockerCompose のスタートアップスクリプト付きで作成。  
+Ubuntu 16.04 イメージを ufw スタートアップスクリプト付きで作成。  
 
 ローカル PC から VPS に接続。
 ```
@@ -9,14 +9,32 @@ ssh ubuntu@IP_ADDRESS
 
 ツール群をインストール
 ```
-$ sudo apt install -y emacs24 ufw
+$ sudo apt install -y emacs24 make git curl nginx
 ```
 
-リポジトリを clone
+Python 3.6 をインストール
 ```
-$ sudo git clone https://github.com/ks6088ts/djangosite.git /home/ubuntu/djangosite
+sudo apt-get update -y
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository ppa:jonathonf/python-3.6
+sudo apt-get update -y
+sudo apt-get install -y python3.6 python3.6-dev python3-pip
 ```
 
+リポジトリのセットアップ
+```
+$ git clone https://github.com/ks6088ts/djangosite.git 
+$ export PIPENV_VENV_IN_PROJECT=true
+$ make init
+$ emacs .env
+$ mkdir static
+$ make django
+$ sudo ufw allow 8080
+$ make server
+```
+
+## Docker 
+Docker を利用する場合、DockerCompose スタートアップスクリプトを利用すると Docker が初期状態から利用できて便利。  
 以下、Docker 上に Django アプリケーションを gunicorn でサービスする手順。  
 
 環境設定ファイルを djangosite/.env に追加。
@@ -55,4 +73,83 @@ $ docker run -it \
 $ cd /djangosite
 $ make admin
 $ make server
+```
+
+これは debug 設定時の動作確認用の作業。
+```
+rm -rf static && mv static_root static
+mkdir media
+```
+
+## ufw
+
+```
+$ sudo ufw allow ${PORT_NUMBER}
+```
+
+## systemd/nginx
+
+Systemd
+```
+# copy .socket and .service files
+$ sudo cp deployments/systemd/* /etc/systemd/system/
+$ sudo systemctl enable djangosite.socket
+$ sudo systemctl enable djangosite.service
+
+$ systemctl start djangosite.socket
+$ sudo systemctl start djangosite.service
+$ sudo systemctl status  djangosite.service
+$ sudo systemctl status  djangosite.socket
+```
+
+Nginx
+```
+$ sudo cp deployments/nginx/djangosite /etc/nginx/sites-available/
+$ sudo ln -s /etc/nginx/sites-available/djangosite /etc/nginx/sites-enabled/
+$ sudo unlink /etc/nginx/sites-enabled/default
+$ sudo nginx -t # syntax check
+$ sudo systemctl reload nginx
+```
+
+
+## https 対応
+
+```
+$ sudo mkdir -p /var/www/letsencrypt
+$ sudo chown ubuntu:root /var/www/letsencrypt
+
+$ sudo add-apt-repository ppa:certbot/certbot
+$ sudo apt-get update -y
+$ sudo apt-get install python-certbot-nginx
+$ sudo apt-get -y install certbot
+
+# Note: nginx に acme-challenge へのアクセス許可ルールを事前に追加する
+$ sudo certbot certonly --webroot -w /var/www/letsencrypt -d www.ks6088ts.work # SSL/TLS 証明書を生成
+$ sudo ls -al /etc/letsencrypt/live/www.ks6088ts.work # 確認
+```
+
+## SSL/TLS 証明書の更新
+
+念の為、以下のコマンドで証明書が更新されることを確認してみる。
+```
+$ sudo /usr/bin/certbot renew --force-renew
+```
+
+スーパーユーザ権限で cron で証明書の更新を定期実行するように設定する。
+
+```
+$ sudo crontab -e
+```
+
+して以下のタスクを追加。
+
+```
+00 00 1 * * /usr/bin/certbot renew -q --renew-hook "/bin/systemctl reload nginx"
+```
+
+
+## Tips
+
+```
+$ docker rm `docker ps -aq`
 ```
