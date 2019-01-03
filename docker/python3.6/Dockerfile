@@ -17,5 +17,4 @@ COPY .env ${REPO_DIR}/.env
 RUN cd ${REPO_DIR} && \
     mkdir static && \
     make init && \
-    make django && \
-    make server
+    make django

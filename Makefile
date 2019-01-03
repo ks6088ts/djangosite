@@ -19,7 +19,10 @@ django:
 	pipenv run python manage.py makemigrations --settings $(DJANGO_SETTINGS_MODULE)
 	pipenv run python manage.py migrate --settings $(DJANGO_SETTINGS_MODULE)
 	pipenv run python manage.py collectstatic --no-input --settings $(DJANGO_SETTINGS_MODULE)
-	# pipenv run python manage.py createsuperuser --settings $(DJANGO_SETTINGS_MODULE) --user $(USER_NAME) --email $(EMAIL_ADDRESS)
+
+.PHONY: admin
+admin:
+	pipenv run python manage.py createsuperuser --settings $(DJANGO_SETTINGS_MODULE) --user $(USER_NAME) --email $(EMAIL_ADDRESS)
 
 .PHONY: server
 server:
