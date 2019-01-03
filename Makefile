@@ -45,3 +45,7 @@ lint:
 .PHONY: fix
 fix:
 	pipenv run autopep8 -ivr $(APP_DIR)
+
+.PHONY: test
+test: lint
+	# Add tests
