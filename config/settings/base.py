@@ -11,15 +11,10 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROJECT_NAME = os.path.basename(BASE_DIR)
-ENV_FILE = os.path.join(BASE_DIR, '.env') 
-
-env = environ.Env()
-env.read_env(ENV_FILE)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -122,7 +117,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'externals'),
-    os.path.join(BASE_DIR, 'assets'),
 ]
 
 MEDIA_URL = '/media/'
@@ -136,11 +130,3 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'full',
     },
 }
-
-# Email
-EMAIL_PORT=env('EMAIL_PORT')
-EMAIL_HOST=env('EMAIL_HOST')
-EMAIL_HOST_USER=env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD=env('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS=env('EMAIL_USE_TLS')
-DEFAULT_FROM_EMAIL=env('DEFAULT_FROM_EMAIL')

@@ -84,7 +84,7 @@ mkdir media
 ## ufw
 
 ```
-$ sudo ufw allow ${PORT_NUMBER}
+$ sudo ufw allow 80
 ```
 
 ## systemd/nginx
@@ -96,7 +96,7 @@ $ sudo cp deployments/systemd/* /etc/systemd/system/
 $ sudo systemctl enable djangosite.socket
 $ sudo systemctl enable djangosite.service
 
-$ systemctl start djangosite.socket
+$ sudo systemctl start djangosite.socket
 $ sudo systemctl start djangosite.service
 $ sudo systemctl status  djangosite.service
 $ sudo systemctl status  djangosite.socket
@@ -118,6 +118,7 @@ $ sudo systemctl reload nginx
 $ sudo mkdir -p /var/www/letsencrypt
 $ sudo chown ubuntu:root /var/www/letsencrypt
 
+# ref. https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04
 $ sudo add-apt-repository ppa:certbot/certbot
 $ sudo apt-get update -y
 $ sudo apt-get install python-certbot-nginx
