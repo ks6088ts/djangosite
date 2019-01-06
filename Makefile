@@ -10,7 +10,7 @@ APP_DIR=products
 
 .PHONY: init
 init:
-	pip3 install pipenv
+	pip install pipenv
 	pipenv install --dev
 	git submodule update --init --recursive
 
