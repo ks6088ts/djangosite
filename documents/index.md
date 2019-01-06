@@ -154,3 +154,29 @@ $ sudo crontab -e
 ```
 $ docker rm `docker ps -aq`
 ```
+
+### データベース関連
+
+#### バックアップ
+
+データベースを json 出力する
+```
+source venv/bin/activate
+python manage.py dumpdata products --format=json --indent=2 > products.json
+```
+
+scp でデータベースの json 出力と media ファイルをダウンロード
+```
+scp user@ip_addr:/home/django-site/project/products.json /path/to/local
+scp -r user@ip_addr:/home/django-site/project/media /path/to/local
+```
+
+#### リストア
+
+```
+# データベースを生成
+pipenv run python manage.py loaddata products --settings config.settings.production
+
+# media ファイルを配置
+scp -r ~/Downloads/media/ user@ip_addr:/home/ubuntu/djangosite/www/djangosite
+```
