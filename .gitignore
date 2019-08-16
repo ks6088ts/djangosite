@@ -106,3 +106,4 @@ venv.bak/
 # Django
 static_root
 media_root
+migrations
