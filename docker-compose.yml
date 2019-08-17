@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  python:
+    container_name: "python"
+    command: bash -c "make -f build/django.mk deploy DJANGO_SETTINGS_MODULE=config.settings.production"
+    build:
+      context: .
+      dockerfile: ./docker/python/Dockerfile
+    env_file:
+      - ./docker/python/env
+    image: djangosite/python
+    volumes:
+      - ./.volumes:/volumes
+      - ./.env:/djangosite/.env
+    networks:
+      - djangosite
+  nginx:
+    container_name: "nginx"
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    env_file:
+      - ./docker/nginx/env
+    ports:
+      - "80:80"
+    image: djangosite/nginx
+    volumes:
+      - ./.volumes:/volumes
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - djangosite
+
+networks:
+  djangosite:
+    external: false

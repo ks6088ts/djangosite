@@ -12,9 +12,9 @@ DEBUG = False
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'www/{}/static'.format(PROJECT_NAME))
+STATIC_ROOT = "/volumes/static"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'www/{}/media'.format(PROJECT_NAME))
+MEDIA_ROOT = "/volumes/media"
 
 # Email
 EMAIL_PORT=env('EMAIL_PORT')

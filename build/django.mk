@@ -7,6 +7,8 @@ STATIC_ROOT=static_root
 MEDIA_ROOT=media_root
 DATABASE=db.sqlite3
 APP_DIR=products
+DATA_FILE=products.json
+MODEL=products
 
 .PHONY: init
 init:
@@ -14,11 +16,21 @@ init:
 	pipenv install --dev
 	git submodule update --init --recursive
 
-.PHONY: django
-django:
+.PHONY: build
+build:
 	pipenv run python manage.py makemigrations --settings $(DJANGO_SETTINGS_MODULE)
 	pipenv run python manage.py migrate --settings $(DJANGO_SETTINGS_MODULE)
 	pipenv run python manage.py collectstatic --no-input --settings $(DJANGO_SETTINGS_MODULE)
+
+.PHONY: load
+load:
+	pipenv run python manage.py loaddata $(DATA_FILE) --settings $(DJANGO_SETTINGS_MODULE)
+
+.PHONY: dump
+dump:
+	pipenv run python manage.py dumpdata $(MODEL) \
+		--format=json --indent=2 \
+		--settings $(DJANGO_SETTINGS_MODULE) > $(DATA_FILE)
 
 .PHONY: admin
 admin:
@@ -49,3 +61,9 @@ fix:
 .PHONY: test
 test: lint
 	# Add tests
+
+.PHONY: deploy
+deploy:
+	make -f build/django.mk build DJANGO_SETTINGS_MODULE=$(DJANGO_SETTINGS_MODULE) && \
+	make -f build/django.mk load DATA_FILE=/volumes/products.json DJANGO_SETTINGS_MODULE=$(DJANGO_SETTINGS_MODULE) && \
+	make -f build/django.mk gunicorn DJANGO_SETTINGS_MODULE=$(DJANGO_SETTINGS_MODULE)
